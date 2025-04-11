@@ -1,3 +1,4 @@
+
 export function initHome() {
     const scheduleButton = document.getElementById('schedule_btn');
     const manageButton = document.getElementById('manage_btn');

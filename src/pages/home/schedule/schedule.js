@@ -8,6 +8,7 @@ export function init() {
     fetchSpecialties()
     fetchDoctorsBySpecialtyEvent()
     schedule()
+    filter()
 }
 
 const fetchSpecialties = async () => {
@@ -43,6 +44,10 @@ const fetchDoctorsBySpecialtyEvent = async () => {
         selectedSpecialty['id'] = specialtyId
         selectedSpecialty['name'] = event.target.options[event.target.selectedIndex].text;
         const lista = document.getElementById('div_doctors')
+        lista.innerHTML = 'Cargando ...'
+        document.getElementById('filtro').classList.add('d-none')
+        const datesContainer = document.getElementById("dates_list")
+        datesContainer.innerHTML = 'Selecciona un doctor para consultar horarios disponibles';
         try {
             const response = await fetch(`${API_BASE_URL}/appointments/doctors?specialty=${specialtyId}`, {
                 method: 'GET',
@@ -53,8 +58,8 @@ const fetchDoctorsBySpecialtyEvent = async () => {
             });
 
             if (response.ok) {
-                lista.innerHTML = ''
                 const data = await response.json();
+                lista.innerHTML = '';
                 data.forEach(doctor => {
                     const doctorOption = document.createElement('div');
                     doctorOption.classList.add('card', 'card-body', 'cursor-pointer')
@@ -65,6 +70,7 @@ const fetchDoctorsBySpecialtyEvent = async () => {
                     doctorOption.addEventListener('click', async () => {
                         selectedDoctor['id'] = doctor.id
                         selectedDoctor['name'] = doctor.name
+                        document.getElementById('filtro').classList.add('d-none')
                         await cargarHorarios(doctor.id);
                     });
 
@@ -77,14 +83,13 @@ const fetchDoctorsBySpecialtyEvent = async () => {
     });
 }
 
-const cargarHorarios = async (doctorId) => {
-    console.log("click en doctor " + doctorId)
+const cargarHorarios = async (doctorId, day) => {
     const filter = document.getElementById('filtro')
     const datesContainer = document.getElementById("dates_list")
-    datesContainer.innerHTML = '';
+    datesContainer.innerHTML = 'Cargando ...';
 
     try {
-        const response = await fetch(`${API_BASE_URL}/appointments/dates?doctor=${doctorId}`, {
+        const response = await fetch(`${API_BASE_URL}/appointments/dates?doctor=${doctorId}&day=${day || ''}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,6 +98,7 @@ const cargarHorarios = async (doctorId) => {
         });
 
         if (response.ok) {
+            datesContainer.innerHTML = '';
             const data = await response.json()
             const dates = data.available;
             filter.classList.remove('d-none')
@@ -118,14 +124,8 @@ const cargarHorarios = async (doctorId) => {
                 item.textContent = `${dia} - ${hora}`;
                 item.addEventListener('click', () => {
                     selectedDate = isoDate
-                    // const fecha = turno.dataset.fecha;
-                    // const hora = turno.dataset.hora;
-
-                    // Insertar contenido dinámico en el modal
                     const modalBody = document.querySelector('#staticBackdrop .modal-body');
                     modalBody.textContent = `Vas a agendar la cita para ${selectedSpecialty['name']} con el doctor(a) ${selectedDoctor['name']} el ${dia} a las ${hora}`;
-
-                    // Mostrar el modal usando Bootstrap 5 con JavaScript
                     const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
                     modal.show();
                     document.getElementById('staticBackdrop').focus();
@@ -142,7 +142,6 @@ const schedule = () => {
     const btn = document.getElementById('agendar_btn')
     btn.addEventListener(
         'click', async () => {
-            console.log(selectedDoctor, selectedSpecialty, selectedDate)
             const response = await fetch(`${API_BASE_URL}/appointments/schedule?doctor=${selectedDoctor["id"]}&specialty=${selectedSpecialty["id"]}&date=${selectedDate}`, {
                 method: 'POST',
                 headers: {
@@ -163,4 +162,40 @@ const schedule = () => {
             }
         }
     )
+}
+
+const filter = async () => {
+    const inputDia = document.getElementById("filtro_dia");
+
+    function getMinFecha() {
+        const now = new Date();
+        const hora = now.getHours();
+
+        // Si son las 7 PM (19) o más, usar mañana como mínimo
+        if (hora >= 19) {
+            now.setDate(now.getDate() + 1);
+        }
+
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    // Al cargar la página, setear min
+    inputDia.min = getMinFecha();
+    const clearFilterBtn = document.getElementById('clean_filter_btn')
+    inputDia.addEventListener("change", async () => {
+        if (!inputDia.value)
+            clearFilterBtn.classList.add('d-none')
+        else
+            clearFilterBtn.classList.remove('d-none')
+        await cargarHorarios(selectedDoctor['id'], inputDia.value);
+    })
+    clearFilterBtn.addEventListener("click", async (event) => {
+        event.preventDefault()
+        inputDia.value = ''
+        await cargarHorarios(selectedDoctor['id'])
+    })
 }

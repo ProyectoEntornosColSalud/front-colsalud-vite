@@ -2,15 +2,21 @@ import {API_BASE_URL} from "../../../config.js";
 
 export function init() {
     loadUserAppointments()
+    addCancelAction()
 }
 
-window.cancelarCita = async (id) => {
-    console.log("Cancelar cita con ID:", id);
-    // Lógica de cancelación
+const askForCancelAppointment = (id) => {
+    // Insertar contenido dinámico en el modal
+    const modalBody = document.querySelector('#staticBackdrop .modal-body');
+    modalBody.textContent = `¿Estás seguro de que deseas cancelar la cita?`;
+    const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+    modal.show();
+    document.getElementById('staticBackdrop').focus();
 }
 
 
 const loadUserAppointments = async () => {
+
     try {
         const response = await fetch(`${API_BASE_URL}/appointments`, {
             method: 'GET', headers: {
@@ -21,7 +27,7 @@ const loadUserAppointments = async () => {
         if (response.ok) {
             const data = await response.json();
             const loadingSpan = document.getElementById("loading");
-            console.log(data)
+            if (!loadingSpan) return;
             if (data.length === 0) {
                 loadingSpan.innerText = 'Parece que no tienes citas programadas'
                 return
@@ -41,28 +47,65 @@ const loadUserAppointments = async () => {
 
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                            <td>${cita.specialtyName}</td>
-                            <td>${cita.doctorName}</td>
-                            <td>${dia}</td>
-                            <td>${hora}</td>
-                            <td> ${getActionButton(cita.appointmentId, cita.status)} </td>
-                             `;
+                        <td>${cita.specialtyName}</td>
+                        <td>${cita.doctorName}</td>
+                        <td>${dia}</td>
+                        <td>${hora}</td>
+                    `;
+
+                const actionTd = document.createElement('td');
+                if (cita.status === 'CANCELADA') {
+                    actionTd.innerHTML = '<span class="text-secondary fw-bold">Cancelada</span>';
+                } else if (cita.status === 'PERDIDA') {
+                    actionTd.innerHTML = '<span class="text-danger fw-bold">Perdida</span>';
+                } else if (cita.status === 'ASISTIDA') {
+                    actionTd.innerHTML = '<span class="text-success fw-bold">Asistida</span>';
+                } else {
+                    const cancelLink = document.createElement('a');
+                    cancelLink.textContent = 'Cancelar';
+                    cancelLink.href = '#';
+                    cancelLink.classList.add('text-danger', 'link-underline-danger');
+                    cancelLink.style.cursor = 'pointer';
+                    cancelLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        const btn = document.getElementById('cancelar_btn')
+                        btn.dataset.ap_id = cita.appointmentId
+                        askForCancelAppointment(cita.appointmentId);
+                    });
+                    actionTd.appendChild(cancelLink);
+                }
+                row.appendChild(actionTd);
                 tbody.appendChild(row);
             });
         }
     } catch (error) {
         console.error("Error fetching user appointments:", error);
     }
+}
 
-    function getActionButton(appointmentId, status) {
-        switch (status) {
-            case 'CANCELADA':
-                return '<span class="text-secondary">Cancelada</span>';
-            case 'ASISTIDA':
-                return '<span class="text-success">Asistida</span>';
-            default:
-                return `<a class="text-danger link-underline-danger cancelar-cita" data-id="${appointmentId}" style="cursor: pointer" onclick="cancelarCita(${appointmentId})">Cancelar</a>`
-
+const addCancelAction = () => {
+    const btn = document.getElementById('cancelar_btn')
+    btn.addEventListener(
+        'click', async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/appointments/cancel?appointment=${btn.dataset.ap_id}`, {
+                    method: 'PUT', headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('Authorization')}`
+                    },
+                });
+                if (response.ok) {
+                    const modalElement = document.getElementById('staticBackdrop');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    modalInstance.hide();
+                    const toastElement = document.getElementById('snackbar');
+                    const toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                    loadUserAppointments()
+                }
+            } catch (error) {
+                console.error("Error fetching user appointments:", error);
+            }
         }
-    }
+    )
 }

@@ -21,25 +21,13 @@
 
             <div class="col-8">
                 <h5>📅 Turnos libres</h5>
-                <div class="col-12 mt-3 mb-3" id="filtro">
-                    <h6>Filtra las citas disponibles</h6>
+                <div class="col-12 mt-3 mb-3 d-none" id="filtro">
                     <div class="d-flex gap-4 align-items-center flex-wrap">
                         <div class="d-flex align-items-center gap-2">
-                            <label for="filtro_dia" class="form-label mb-0">Día:</label>
+                            <label for="filtro_dia" class="form-label mb-0">Dia</label>
                             <input type="date" id="filtro_dia" name="filtro_dia" class="form-control">
                         </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <label for="filtro_hora_inicio" class="form-label mb-0"> de </label>
-                            <select type="number" id="filtro_hora_inicio" name="filtro_hora_inicio"
-                                    class="form-control px-2">
-                            </select>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <label for="filtro_hora_fin" class="form-label mb-0"> a </label>
-                            <select type="number" id="filtro_hora_fin" name="filtro_hora_fin"
-                                    class="form-control px-2"></select>
-                        </div>
-                        <a class="btn btn-primary">Filtrar</a>
+                        <a class="text-danger d-none" id="clean_filter_btn" style="cursor: pointer; text-decoration: none">Limpiar filtro</a>
                     </div>
                 </div>
                 <div id="dates_list" class="list-group row-gap-2">
@@ -71,12 +59,14 @@
 </div>
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
-    <div id="snackbar" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="snackbar" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+         aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 ¡Cita agendada con éxito!
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
         </div>
     </div>
 </div>

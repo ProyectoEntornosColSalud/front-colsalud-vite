@@ -10,10 +10,16 @@
 </head>
 <body>
 <header class="bg-primary text-white py-3 shadow-sm">
-    <div class="container d-flex align-items-center">
-        <p class="bi bi-person-circle fs-3 me-2">COLSALUD</p>
+    <div class="container-fluid d-flex align-items-center justify-content-between px-4" id="header">
+        <div class="bi bi-person-circle fs-3" style="cursor: pointer" id="logo_home">COLSALUD</div>
+        <div id="account_options" class="d-none">
+            <span><a href="/cuenta" data-link style="color: white; text-decoration: none; margin: 5px">Actualizar mis datos</a></span>
+            <span><a href="/ingresar" data-link
+                     style="color: white; text-decoration: none; margin: 5px">Salir</a></span>
+        </div>
     </div>
 </header>
+
 <div id="app"></div>
 <script type="module" src="./src/main.js"></script>
 </body>

@@ -1,7 +1,8 @@
 const routes = {
     '/citas': {view: '/src/pages/home/home.html'},
     '/ingresar': {view: '/src/pages/login/login.html'},
-    '/registrarse': {view: '/src/pages/register/register.html'}
+    '/registrarse': {view: '/src/pages/register/register.html'},
+    '/cuenta': {view: '/src/pages/update/update.html'}
 };
 
 const routeModules = {
@@ -9,13 +10,30 @@ const routeModules = {
         const module = await import('./pages/home/home.js');
         module.initHome();
     },
-    '/ingresar': () => import('./pages/login/login.js'),
-    '/registrarse': () => import('./pages/register/register.js')
+    '/ingresar': async () => {
+        const m = await import('./pages/login/login.js')
+        m.init()
+    },
+    '/registrarse': async () => {
+        const m = await import('./pages/register/register.js')
+        m.init()
+    },
+    '/cuenta': async () => {
+        const m = await import('./pages/update/update.js')
+        m.init()
+    }
 };
 
 async function loadView(path) {
     let route = routes[path];
     if (!route) return;
+
+    const opt = document.getElementById('account_options');
+    if (path === '/citas') {
+        opt.classList.remove('d-none');
+    } else {
+        opt.classList.add('d-none');
+    }
 
     const res = await fetch(route.view);
     document.getElementById('app').innerHTML = await res.text();
