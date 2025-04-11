@@ -1,0 +1,52 @@
+<div class="container bg-light p-4 mt-5">
+    <h5>Tus citas médicas</h5>
+    <div id="body" class="d-flex flex-column align-items-center justify-content-center card min-vh-75 p-5">
+        <span id="loading">Cargando ...</span>
+        <div class="w-100 d-none" id="table-container">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Especialidad</th>
+                    <th scope="col">Doctor(a)</th>
+                    <th scope="col">Dia</th>
+                    <th scope="col">Hora</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Cancelar cita</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="cancelar_btn">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+    <div id="snackbar" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+         aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                ¡Cancelaste tu cita!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>

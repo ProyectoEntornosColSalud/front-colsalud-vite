@@ -1,0 +1,115 @@
+<div class="container mt-5">
+    <h1 class="h4 mb-4">Registro de Usuario</h1>
+    <form class="p-4 border rounded shadow" id="form_register">
+        <fieldset>
+            <legend class="mb-4">Registrarse</legend>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="document_type" class="form-label">Tipo de documento</label>
+                    <select name="document_type" id="document_type" class="form-select">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="TI">TI</option>
+                        <option value="CC">CC</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="document_number" class="form-label">Número de documento</label>
+                    <input type="number" id="document_number" name="document_number" class="form-control" required
+                           maxlength="10" pattern="^\d{1,10}$"
+                           title="Solo se permiten números, sin espacios, hasta 10 dígitos.">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="name" class="form-label">Nombres</label>
+                    <input type="text" id="name" name="name" class="form-control" autocomplete="name" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="last_name" class="form-label">Apellidos</label>
+                    <input type="text" id="last_name" name="last_name" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="genre" class="form-label">Género</label>
+                    <select name="genre" id="genre" class="form-select">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="hombre">Hombre</option>
+                        <option value="mujer">Mujer</option>
+                        <option value="no-binario">No binario</option>
+                        <option value="genero-fluido">Género fluido</option>
+                        <option value="bigenero">Bigénero</option>
+                        <option value="trigenero">Trigénero</option>
+                        <option value="agenero">Agénero</option>
+                        <option value="demiboy">Demiboy</option>
+                        <option value="demigirl">Demigirl</option>
+                        <option value="neutrois">Neutrois</option>
+                        <option value="maverique">Maverique</option>
+                        <option value="androgino">Andrógino</option>
+                        <option value="genero-queer">Género queer</option>
+                        <option value="dos-espiritus">Dos espíritus</option>
+                        <option value="hijra">Hijra</option>
+                        <option value="faafafine">Fa’afafine</option>
+                        <option value="bakla">Bakla</option>
+                        <option value="muxhe">Muxhe</option>
+                        <option value="intergenero">Intergénero</option>
+                        <option value="autogenero">Autogénero</option>
+                        <option value="aliagenero">Aliagénero</option>
+                        <option value="xenogenero">Xenogénero</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+                    <input type="date" id="birth_date" name="birth_date" class="form-control" autocomplete="bday"
+                           required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Correo</label>
+                    <input type="email" id="email" name="email" class="form-control" autocomplete="email" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="tel" class="form-label">Teléfono</label>
+                    <input type="tel" id="tel" name="phone" class="form-control" autocomplete="tel" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" class="form-control" required>
+                        <button type="button" id="toggle_password" class="btn btn-outline-secondary">
+                            👀
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="password_confirm" class="form-label">Confirmar contraseña</label>
+                    <div class="input-group">
+                        <input type="password" id="password_confirm" name="password_confirm" class="form-control"
+                               required>
+                        <button type="button" id="toggle_password_confirm" class="btn btn-outline-secondary">👀</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <span class="text-danger" id="error_register_message"></span>
+            </div>
+
+            <div class="row justify-content-end">
+                <div class="col-2 mb-3">
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <div class="mt-3"><a href="/ingresar" data-link>Ingresa si ya tienes una cuenta</a></div>
+
+</div>

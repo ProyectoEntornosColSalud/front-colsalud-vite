@@ -1,0 +1,72 @@
+<div>
+    <section class="container bg-light p-4 mt-5">
+
+        <!-- Filtros -->
+        <div class="mb-3">
+            <label for="select_especialidad" class="form-label">Especialidad</label>
+            <select name="select_especialidad" id="select_especialidad" class="form-select">
+                <option value="" selected disabled>Selecciona una especialidad</option>
+            </select>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col-4">
+                <h5>👨‍⚕️ Doctores disponibles</h5>
+                <div class="list-group row-gap-2" id="div_doctors">
+                    <div>Elige una especialidad para consultar doctores disponibles</div>
+                </div>
+            </div>
+
+            <div class="col-8">
+                <h5>📅 Turnos libres</h5>
+                <div class="col-12 mt-3 mb-3 d-none" id="filtro">
+                    <div class="d-flex gap-4 align-items-center flex-wrap">
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="filtro_dia" class="form-label mb-0">Dia</label>
+                            <input type="date" id="filtro_dia" name="filtro_dia" class="form-control">
+                        </div>
+                        <a class="text-danger d-none" id="clean_filter_btn" style="cursor: pointer; text-decoration: none">Limpiar filtro</a>
+                    </div>
+                </div>
+                <div id="dates_list" class="list-group row-gap-2">
+                    Selecciona un doctor para consultar horarios disponibles
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Agendar cita</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="agendar_btn">Sí, agendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+    <div id="snackbar" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+         aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                ¡Cita agendada con éxito!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
