@@ -4,15 +4,15 @@ import {navigate} from "../../main.js";
 export function init() {
     // Establecer valores por defecto en los inputs
     document.getElementById("document_type").value = "CC";
-    document.getElementById("document_number").value = "1234567890";
-    document.getElementById("name").value = "Nombre";
-    document.getElementById("last_name").value = "Apellido";
+    document.getElementById("document_number").value = "99";
+    document.getElementById("name").value = "Jon";
+    document.getElementById("last_name").value = "Doe";
     document.getElementById("genre").value = "hombre";
     document.getElementById("birth_date").value = "2000-01-01";
     document.getElementById("email").value = "correo@example.com";
     document.getElementById("tel").value = "1234567890";
-    document.getElementById("password").value = "password123";
-    document.getElementById("password_confirm").value = "password123";
+    document.getElementById("password").value = "hola123";
+    document.getElementById("password_confirm").value = "hola123";
     addFormSubmitEvent();
     addToggleShowPasswordButtonEvent();
 }
